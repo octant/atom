@@ -20,4 +20,11 @@ Rake::TestTask.new do |t|
   t.test_files = FileList['test/tc_*.rb']
 end
 
+require 'cucumber'
+require 'cucumber/rake/task'
+Cucumber::Rake::Task.new(:features) do |t|
+  t.cucumber_opts = "features --format pretty -x"
+  t.fork = false
+end
+
 task :default => :test

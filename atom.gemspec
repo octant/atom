@@ -21,5 +21,6 @@ lib/atom_version.rb
   s.executables << 'atom'
   s.add_development_dependency('rake')
   s.add_development_dependency('rdoc')
+  s.add_development_dependency('aruba', '~> 0.4.6')
   s.add_runtime_dependency('gli')
 end

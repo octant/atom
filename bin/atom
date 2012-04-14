@@ -14,22 +14,15 @@ $: << File.expand_path(File.dirname(File.realpath(__FILE__)) + '/../lib')
 require 'rubygems'
 require 'gli'
 require 'atom_version'
+require 'atom'
 
 include GLI
 
-program_desc 'Describe your application here'
+program_desc 'tool for creating "atomic" text-based documentation'
 
 version Atom::VERSION
 
-desc 'Describe some switch here'
-switch [:s,:switch]
-
-desc 'Describe some flag here'
-default_value 'the default'
-arg_name 'The name of the argument'
-flag [:f,:flagname]
-
-desc 'Describe new here'
+desc 'create a new documentation repository'
 arg_name 'Describe arguments to new here'
 command :new do |c|
   c.desc 'Describe a switch to new'
@@ -39,7 +32,18 @@ command :new do |c|
   c.default_value 'default'
   c.flag :f
   c.action do |global_options,options,args|
-
+    proj_names = args
+    
+    if args.length < 1
+      raise 'You must provide a project name'
+    elsif File.exist? '.atom'
+      raise 'This appears to be an atom directory'
+    end
+    
+    proj_names.each do |proj_name|
+      Atom::Scaffold.create(proj_name)
+    end
+    
     # Your command logic here
      
     # If you have any errors, just raise them
