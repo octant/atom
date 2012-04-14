@@ -1,0 +1,6 @@
+= atom
+
+Describe your project here
+
+:include:atom.rdoc
+

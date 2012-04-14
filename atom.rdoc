@@ -1,0 +1,5 @@
+= atom
+
+Generate this with
+    atom rdoc
+After you have described your command line interface
