@@ -22,15 +22,12 @@ program_desc 'tool for creating "atomic" text-based documentation'
 
 version Atom::VERSION
 
-desc 'create a new documentation repository'
-arg_name 'Describe arguments to new here'
-command :new do |c|
-  c.desc 'Describe a switch to new'
-  c.switch :s
+# init command
+desc 'create a new document repository'
+arg_name 'list of repository names'
+skips_pre
+command :init do |c|
 
-  c.desc 'Describe a flag to new'
-  c.default_value 'default'
-  c.flag :f
   c.action do |global_options,options,args|
     proj_names = args
     
@@ -44,20 +41,53 @@ command :new do |c|
       Atom::Scaffold.create(proj_name)
     end
     
-    # Your command logic here
-     
-    # If you have any errors, just raise them
-    # raise "that command made no sense"
+  end
+end
+
+# new commmand
+desc 'create a new document'
+arg_name "'document title'"
+command :new do |c|
+  c.desc 'create concept document'
+  c.switch [:c, :concept]
+  
+  c.desc 'create map document'
+  c.switch [:m, :map]
+  
+  c.desc 'create procedure document'
+  c.switch [:p, :procedure]
+  
+  c.action do |global_options,options,args|
+    
+    if options[:c]
+      Atom::Render.template('concept', args[0])
+    end
+    
+    if options[:m]
+      Atom::Render.template('map', args[0])
+    end
+    
+    if options[:p]
+      Atom::Render.template('procedure', args[0])
+    end
   end
 end
 
 pre do |global,command,options,args|
-  # Pre logic here
-  # Return true to proceed; false to abort and not call the
-  # chosen command
-  # Use skips_pre before a command to skip this block
-  # on that command only
-  true
+  if File.exist?('.atom')
+    module Atom
+      PATH = Dir.pwd
+      CONFIG = YAML.load_file("#{PATH}/config/atom.yml")
+
+      CONFIG[:author] = `git config --get user.name`
+    end
+    
+    true
+  else
+    raise "This command needs to run in an atom directory"
+      
+    false
+  end
 end
 
 post do |global,command,options,args|

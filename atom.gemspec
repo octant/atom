@@ -23,4 +23,5 @@ lib/atom_version.rb
   s.add_development_dependency('rdoc')
   s.add_development_dependency('aruba', '~> 0.4.6')
   s.add_runtime_dependency('gli')
+  s.add_runtime_dependency('mustache')
 end
