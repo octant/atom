@@ -29,7 +29,14 @@ module Atom
     
     def self.mk_dotgitignore(root_dir)
       $stdout.puts "create [File]: #{root_dir}/.gitignore"
-      FileUtils.touch "#{root_dir}/.gitignore"
+      File.open("#{root_dir}/.gitignore", "w") do |file|
+        file.puts <<EOS
+config/
+output/
+temp/
+EOS
+      end
+      
     end
     
     def self.mk_atom(root_dir)
