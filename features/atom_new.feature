@@ -1,55 +1,56 @@
-Feature: We can create a new atom project
+Feature: We can generate atoms from templates
+	In order to save time
 	As an administrator responsible for keeping documentation up-to-date
-	I want to use atom to manage my documentation
+	I want to be able generate atoms from templates
 	
-	Scenario: Create a new atom project
-		When I successfully run `atom new docs`
-		Then the following directories should exist:
-			| docs |
-			| docs/config |
-			| docs/output |
-			| docs/source |
-			| docs/source/atoms |
-			| docs/source/maps |
-			| docs/temp |
-			| docs/templates |
-		And the following files should exist:
-			| docs/.atom |
-			| docs/.gitignore |
-			| docs/config/atom.yml |
-			| docs/templates/concept.textile |
-			| docs/templates/procedure.textile |
-			| docs/templates/map.textile |
+	Scenario: Generate a new procedure
+		When I successfully run `atom init docs`
+		And I cd to "docs"
+		And I successfully run `atom new -p 'Topic Title Text'`
+		Then the stdout should contain:
+			"""
+			create [File]: source/topics/p_topic_title_text.textile
+			"""
+		And a file named "source/topics/p_topic_title_text.textile" should exist
+		And the file "source/topics/p_topic_title_text.textile" should contain "Topic Title Text"
 	
-	Scenario: Run the `atom new` command without providing a project name
-		When I run `atom new`
+	Scenario: Generate a new concept with the [t, type] flag
+		When I successfully run `atom init docs`
+		And I cd to "docs"
+		And I successfully run `atom new -c 'Atom Title Text'`
+		Then the stdout should contain:
+			"""
+			create [File]: source/topics/c_atom_title_text.textile
+			"""
+		And a file named "source/topics/c_atom_title_text.textile" should exist
+		And the file "source/topics/c_atom_title_text.textile" should contain "Atom Title Text"
+
+	Scenario: Generate a new molecule with the [t, type] flag
+		When I successfully run `atom init docs`
+		And I cd to "docs"
+		And I successfully run `atom new -m 'Atom Title Text'`
+		Then the stdout should contain:
+			"""
+			create [File]: source/maps/m_atom_title_text.textile
+			"""
+		And a file named "source/maps/m_atom_title_text.textile" should exist
+		And the file "source/maps/m_atom_title_text.textile" should contain "Atom Title Text"
+			
+	Scenario: Attempt to generate an existing atom
+		When I successfully run `atom init docs`
+		And I cd to "docs"
+		Given an empty file named "source/topics/p_atom_title_text.textile"
+		And I run `atom new -p 'Atom Title Text'`
 		Then the exit status should not be 0
 		And the stderr should contain:
 			"""
-			You must provide a project name
+			File already exists
 			"""
-	
-	Scenario: Run the `atom new` command with more than 1 argument
-		When I successfully run `atom new docs drp contracts`
-		Then the following directories should exist:
-			| docs |
-			| drp |
-			| contracts |
-	
-	Scenario: Attempt to create a new atom project with the same name as an existing directory
-		Given a directory named "docs"
-		When I run `atom new docs`
+
+	Scenario: Attempt to generate a new procedure while not in an atom directory
+		When I run `atom new 'Atom Title Text'`
 		Then the exit status should not be 0
 		And the stderr should contain:
 			"""
-			'docs' already exists
-			"""
-	
-	Scenario: Attempt to create a new atom project in an atom directory
-		Given an empty file named ".atom"
-		When I run `atom new docs`
-		Then the exit status should not be 0
-		And the stderr should contain:
-			"""
-			This appears to be an atom directory
+			This command needs to run in an atom directory
 			"""
