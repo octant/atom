@@ -1,4 +1,3 @@
-
 module Atom
   class Scaffold
     def self.create(root_dir)
@@ -20,6 +19,7 @@ module Atom
         mk_concept(root_dir)
         mk_procedure(root_dir)
         mk_map(root_dir)
+        mk_html_skeleton(root_dir)
       end
     end
     
@@ -37,7 +37,6 @@ output/
 temp/
 EOS
       end
-      
     end
     
     def self.mk_atom(root_dir)
@@ -62,7 +61,6 @@ h1(title). {{title}}
 
 EOS
       end
-      
     end
     
     def self.mk_procedure(root_dir)
@@ -99,13 +97,30 @@ class: map
 
 h1(title). {{title}}
 
-To include topics in this document, begin a line with @=@ followed by a space and the topics's title. Like so:
+To include topics in this document, begin a line with @=@ followed by a space and the title of the topic. Like so:
 
 bc. = Title of My Topic
 
 EOS
       end
-      
+    end
+    
+    def self.mk_html_skeleton(root_dir)
+      $stdout.puts "create [File]: #{root_dir}/templates/default.html"
+      File.open("#{root_dir}/templates/default.html", "w") do |file|
+        file.puts <<EOS
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>{{title}}</title>
+</head>
+  <body>
+  {{{body}}}
+  </body>
+</html>
+EOS
+      end
     end
     
     def self.mkdirs(root_dir, dirs)

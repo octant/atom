@@ -21,6 +21,7 @@ Feature: We can create a new atom project
 			| docs/templates/concept.textile |
 			| docs/templates/procedure.textile |
 			| docs/templates/map.textile |
+			| docs/templates/default.html |
 		And the stdout should contain:
 			"""
 			create  [Dir]: docs/source

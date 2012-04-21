@@ -48,3 +48,10 @@ Feature: we can generate html documents from our textile documents
 			overwrite [File]: output/html/map_title_text_overwrite.html
 			"""
 		And the file "output/html/map_title_text_overwrite.html" should contain "<h1>Unique Title</h1>"
+		
+	Scenario: use an html skeleton
+		When I successfully run `atom init docs`
+		And I cd to "docs"
+		And I successfully run `atom new -m 'Map Title Text Overwrite'`
+		And I successfully run `atom build 'Map Title Text Overwrite'`
+		Then the file "output/html/map_title_text_overwrite.html" should contain "<!DOCTYPE html>"

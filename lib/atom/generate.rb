@@ -11,8 +11,9 @@ module Atom
       else
         $stdout.puts "create [File]: #{File.join(dest, file_name)}"
         File.open(File.join(dest, file_name), "w").write(
-        Mustache.render(
-          template, title: title, author: Atom::CONFIG[:author])
+          Mustache.render(
+            template, :title => title, :author => Atom::CONFIG[:author]
+          )
         )
       end
     end
@@ -32,6 +33,7 @@ module Atom
       out_file_name = "#{File.basename(file, ".textile").split('_')[1..-1].join('_')}.html"
       out_file_path = File.join(Atom::PATH, "output/html")
       out_file = File.join(out_file_path, out_file_name)
+      template = File.read(File.join(Atom::PATH, "templates/default.html"))
       
       doc = File.read(file)
       rc = RedCloth.new(doc)
@@ -42,10 +44,11 @@ module Atom
         $stdout.puts "create [File]: output/html/#{out_file_name}"
       end
       
-      File.open(out_file, "w") do |file|
-        file.puts rc.to_html
-      end
-      
+      File.open(out_file, "w").write(
+        Mustache.render(
+          template, :body => rc.to_html, :title => ''
+        )
+      )
     end
     
     # Helpers
@@ -64,6 +67,5 @@ module Atom
       
       return root
     end
-    
   end
 end
