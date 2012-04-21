@@ -9,6 +9,7 @@ module Atom
         'config',
         'temp',
         'output',
+        ['output', 'html'],
         'templates'
       ]
       
@@ -52,8 +53,10 @@ EOS
       $stdout.puts "create [File]: #{root_dir}/templates/concept.textile"
       File.open("#{root_dir}/templates/concept.textile", "w") do |file|
         file.puts <<EOS
-bc(properties){display:none}. author: {{author}}
-kind: concept
+---
+author: {{author}}
+class: concept
+---
 
 h1(title). {{title}}
 
@@ -66,8 +69,10 @@ EOS
       $stdout.puts "create [File]: #{root_dir}/templates/procedure.textile"
       File.open("#{root_dir}/templates/procedure.textile", "w") do |file|
         file.puts <<EOS
-bc(properties){display:none}. author: {{author}}
-kind: procedure
+---
+author: {{author}}
+class: procedure
+---
 
 h1(title). {{title}}
 
@@ -87,8 +92,10 @@ EOS
       $stdout.puts "create [File]: #{root_dir}/templates/map.textile"
       File.open("#{root_dir}/templates/map.textile", "w") do |file|
         file.puts <<EOS
-bc(properties){display:none}. author: {{author}}
-kind: map
+---
+author: {{author}}
+class: map
+---
 
 h1(title). {{title}}
 

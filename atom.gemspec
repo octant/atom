@@ -12,7 +12,11 @@ spec = Gem::Specification.new do |s|
   s.files = %w(
 bin/atom
 lib/atom_version.rb
-  )
+lib/atom.rb
+lib/atom/scaffold.rb
+lib/atom/generate.rb
+lib/atom/helpers.rb
+)
   s.require_paths << 'lib'
   s.has_rdoc = true
   s.extra_rdoc_files = ['README.rdoc','atom.rdoc']
@@ -24,4 +28,5 @@ lib/atom_version.rb
   s.add_development_dependency('aruba', '~> 0.4.6')
   s.add_runtime_dependency('gli')
   s.add_runtime_dependency('mustache')
+  s.add_runtime_dependency('RedCloth')
 end

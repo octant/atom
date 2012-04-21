@@ -8,6 +8,7 @@ Feature: We can create a new atom project
 			| docs |
 			| docs/config |
 			| docs/output |
+			| docs/output/html |
 			| docs/source |
 			| docs/source/topics |
 			| docs/source/maps |
@@ -28,6 +29,7 @@ Feature: We can create a new atom project
 			create  [Dir]: docs/config
 			create  [Dir]: docs/temp
 			create  [Dir]: docs/output
+			create  [Dir]: docs/output/html
 			create  [Dir]: docs/templates
 			create [File]: docs/.atom
 			create [File]: docs/.gitignore

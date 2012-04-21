@@ -40,7 +40,6 @@ command :init do |c|
     proj_names.each do |proj_name|
       Atom::Scaffold.create(proj_name)
     end
-    
   end
 end
 
@@ -60,27 +59,38 @@ command :new do |c|
   c.action do |global_options,options,args|
     
     if options[:c]
-      Atom::Render.template('concept', args[0])
+      Atom::Generate.template('concept', args[0])
     end
     
     if options[:m]
-      Atom::Render.template('map', args[0])
+      Atom::Generate.template('map', args[0])
     end
     
     if options[:p]
-      Atom::Render.template('procedure', args[0])
+      Atom::Generate.template('procedure', args[0])
     end
   end
 end
 
-pre do |global,command,options,args|
-  if File.exist?('.atom')
-    module Atom
-      PATH = Dir.pwd
-      CONFIG = YAML.load_file("#{PATH}/config/atom.yml")
+# build command
+desc 'output source document into another format'
+arg_name "'document title'"
+command :build do |c|
+  c.desc 'output format'
+  c.default_value :html
+  c.flag [:o, :output]
 
-      CONFIG[:author] = `git config --get user.name`
-    end
+  c.action do |global_options,options,args|
+    temp_file = Atom::Generate.temp_file('map', args[0])
+    Atom::Generate.send(options[:o], temp_file)
+  end
+end
+
+pre do |global,command,options,args|
+  if command.name == :help # allow help command to run
+    true
+  elsif File.exist?('.atom')
+    Atom::load_config
     
     true
   else
