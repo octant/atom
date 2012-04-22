@@ -76,13 +76,14 @@ end
 desc 'output source document into another format'
 arg_name "'document title'"
 command :build do |c|
-  c.desc 'output format'
-  c.default_value :html
-  c.flag [:o, :output]
-
   c.action do |global_options,options,args|
     temp_file = Atom::Generate.temp_file('map', args[0])
-    Atom::Generate.send(options[:o], temp_file)
+
+    Atom::Plugger.run_pre(temp_file)
+    
+    html_file = Atom::Generate.send(:html, temp_file)
+    
+    Atom::Plugger.run_post(html_file)
   end
 end
 

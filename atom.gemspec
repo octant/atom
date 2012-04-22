@@ -16,6 +16,8 @@ lib/atom.rb
 lib/atom/scaffold.rb
 lib/atom/generate.rb
 lib/atom/helpers.rb
+lib/atom/plugin.rb
+lib/atom/plugger.rb
 )
   s.require_paths << 'lib'
   s.has_rdoc = true

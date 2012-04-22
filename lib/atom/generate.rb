@@ -44,11 +44,11 @@ module Atom
         $stdout.puts "create [File]: output/html/#{out_file_name}"
       end
       
-      File.open(out_file, "w").write(
-        Mustache.render(
-          template, :body => rc.to_html, :title => ''
-        )
-      )
+      File.open(out_file, "w") do |file|
+        file.puts Mustache.render(template, :body => rc.to_html, :title => '')
+      end
+      
+      return out_file
     end
     
     # Helpers
