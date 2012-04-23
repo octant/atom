@@ -57,7 +57,7 @@ author: {{author}}
 class: concept
 ---
 
-h1(title). {{title}}
+h1(topic-title). {{title}}
 
 EOS
       end
@@ -72,7 +72,7 @@ author: {{author}}
 class: procedure
 ---
 
-h1(title). {{title}}
+h1(topic-title). {{title}}
 
 p(preparation). Before you begin
 
@@ -95,7 +95,7 @@ author: {{author}}
 class: map
 ---
 
-h1(title). {{title}}
+h1(map-title). {{title}}
 
 To include topics in this document, begin a line with @=@ followed by a space and the title of the topic. Like so:
 

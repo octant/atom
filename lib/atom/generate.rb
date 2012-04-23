@@ -28,6 +28,7 @@ module Atom
         "#{Atom::PATH}/temp/#{file_name}",
         Atom::sub_topics(Atom::get_src_file_by_title(title, 'maps'))
       )
+      
       return "#{Atom::PATH}/temp/#{file_name}"
     end
     
@@ -48,7 +49,10 @@ module Atom
       
       Atom::write_file(
         out_file,
-        Mustache.render(template, :body => rc.to_html, :title => '')
+        Mustache.render(
+          template, :body => rc.to_html,
+          :title => File.basename(file)
+        )
       )
       
       return out_file
