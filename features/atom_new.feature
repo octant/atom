@@ -14,7 +14,7 @@ Feature: We can generate atoms from templates
 		And a file named "source/topics/p_topic_title_text.textile" should exist
 		And the file "source/topics/p_topic_title_text.textile" should contain "Topic Title Text"
 	
-	Scenario: Generate a new concept with the [t, type] flag
+	Scenario: Generate a new concept
 		When I successfully run `atom init docs`
 		And I cd to "docs"
 		And I successfully run `atom new -c 'Atom Title Text'`
@@ -25,7 +25,7 @@ Feature: We can generate atoms from templates
 		And a file named "source/topics/c_atom_title_text.textile" should exist
 		And the file "source/topics/c_atom_title_text.textile" should contain "Atom Title Text"
 
-	Scenario: Generate a new molecule with the [t, type] flag
+	Scenario: Generate a new map
 		When I successfully run `atom init docs`
 		And I cd to "docs"
 		And I successfully run `atom new -m 'Atom Title Text'`

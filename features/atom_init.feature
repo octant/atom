@@ -14,6 +14,7 @@ Feature: We can create a new atom project
 			| docs/source/maps |
 			| docs/temp |
 			| docs/templates |
+			| docs/plugins |
 		And the following files should exist:
 			| docs/.atom |
 			| docs/.gitignore |
@@ -32,6 +33,7 @@ Feature: We can create a new atom project
 			create  [Dir]: docs/output
 			create  [Dir]: docs/output/html
 			create  [Dir]: docs/templates
+			create  [Dir]: docs/plugins
 			create [File]: docs/.atom
 			create [File]: docs/.gitignore
 			create [File]: docs/config/atom.yml

@@ -9,7 +9,8 @@ module Atom
         'temp',
         'output',
         ['output', 'html'],
-        'templates'
+        'templates',
+        'plugins'
       ]
       
       if mkdirs(root_dir, dirs)
