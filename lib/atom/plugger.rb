@@ -37,7 +37,7 @@ module Atom
         text = subclass.new(text)
       end
       
-      File.open(file_path, "w").write(text)
+      Atom::write_file(file_path, text)
     end
   end
 end

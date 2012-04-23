@@ -10,7 +10,9 @@ module Atom
         raise "File already exists"
       else
         $stdout.puts "create [File]: #{File.join(dest, file_name)}"
-        File.open(File.join(dest, file_name), "w").write(
+
+        Atom::write_file(
+          File.join(dest, file_name),
           Mustache.render(
             template, :title => title, :author => Atom::CONFIG[:author]
           )
@@ -22,10 +24,10 @@ module Atom
       dest = self.destination("temp", type)
       file_name = self.name(type, title)
       
-      File.open("#{Atom::PATH}/temp/#{file_name}", "w") do |file|
-        file.puts Atom::sub_topics(Atom::get_src_file_by_title(title, 'maps'))
-      end
-      
+      Atom::write_file(
+        "#{Atom::PATH}/temp/#{file_name}",
+        Atom::sub_topics(Atom::get_src_file_by_title(title, 'maps'))
+      )
       return "#{Atom::PATH}/temp/#{file_name}"
     end
     
@@ -44,9 +46,10 @@ module Atom
         $stdout.puts "create [File]: output/html/#{out_file_name}"
       end
       
-      File.open(out_file, "w") do |file|
-        file.puts Mustache.render(template, :body => rc.to_html, :title => '')
-      end
+      Atom::write_file(
+        out_file,
+        Mustache.render(template, :body => rc.to_html, :title => '')
+      )
       
       return out_file
     end

@@ -1,12 +1,11 @@
 module Atom
   class Plugin
+    def self.subclasses
+      @subclasses ||= []
+    end
     
     def self.inherited(base)
       subclasses << base
-    end
-
-    def self.subclasses
-      @subclasses ||= []
     end
     
     def initialize(content)

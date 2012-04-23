@@ -81,7 +81,7 @@ command :build do |c|
 
     Atom::Plugger.run_pre(temp_file)
     
-    html_file = Atom::Generate.send(:html, temp_file)
+    html_file = Atom::Generate.html(temp_file)
     
     Atom::Plugger.run_post(html_file)
   end

@@ -30,11 +30,11 @@ Feature: we can allow users to modify the build process with plugins
 		And I append to "config/atom.yml" with:
 			"""
 			
-			plugins: { post: [tilted] }
+			plugins: { post: [mad] }
 			"""
-		And a file named "plugins/tilted.rb" with:
+		And a file named "plugins/mad.rb" with:
 			"""
-			class Tilted < Atom::Plugin
+			class Mad < Atom::Plugin
 			  def run(text)
 			    text.gsub(/Map/, "Mad")
 			  end

@@ -64,4 +64,12 @@ module Atom
       raise ArgumentError, "Ambiguous title"
     end
   end
+  
+  # Ensure files are written in a consistant manner
+  def self.write_file(path, content)
+    file = File.open(path, "w")
+    file.write(content)
+    file.flush
+    file.close
+  end
 end

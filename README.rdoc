@@ -1,6 +1,6 @@
 = Atom - A framework for generating text based documentation.
 
-Atom is loosely based on the Darwin Information Typing Architecture (DITA) and influenced heavily by Jekyll. 
+Atom is loosely based on the Darwin Information Typing Architecture (DITA) and influenced by Jekyll. 
 
 DITA is XML-based, and content is created as small topic items, rather than long books or chapters. A DITA map contains links to topics, organized in the sequence (which may be hierarchical) in which they are intended to appear in finished documents.
 
