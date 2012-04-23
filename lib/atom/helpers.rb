@@ -36,8 +36,8 @@ module Atom
         depth ||= 0
         data, content = Atom::read_yaml(
           File.read(
-            Dir.glob("source/topics/?_#{title.downcase.split.join('_')}.textile").first # Test if it's a file
-            ).gsub(/^h(\d)(.*)/) { "h#{($1.to_i + depth.to_i).to_s}#{$2}" }
+            Atom::get_src_file_by_title(title, 'topics')
+          ).gsub(/^h(\d)(.*)/) { "h#{($1.to_i + depth.to_i).to_s}#{$2}" }
         )
         
         new_file += "<section class=\"#{data['class']}\" author=\"#{data['author']}\">\n"
@@ -59,9 +59,9 @@ module Atom
     if result.size == 1
       result.first
     elsif result.size == 0
-      raise ArgumentError, "Title not found"
+      raise "Title '#{title}' not found"
     else 
-      raise ArgumentError, "Ambiguous title"
+      raise "Ambiguous title '#{title}'"
     end
   end
   

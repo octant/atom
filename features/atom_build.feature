@@ -48,7 +48,27 @@ Feature: we can generate html documents from our textile documents
 			overwrite [File]: output/html/map_title_text_overwrite.html
 			"""
 		And the file "output/html/map_title_text_overwrite.html" should contain "<h1>Unique Title</h1>"
-		
+	
+	Scenario: throw friendly error when included content can not be found
+		When I successfully run `atom init docs`
+		And I cd to "docs"
+		And I successfully run `atom new -m 'Map Title Text'`
+		And a file named "source/topics/c_topic_title.textile" with:
+			"""
+			h1(title). Topic Title
+			
+			"""
+		And I append to "source/maps/m_map_title_text.textile" with:
+			"""
+			
+			=1 Topic Tite
+			"""
+		And I run `atom build 'Map Title Text'`
+		Then the stderr should contain:
+			"""
+			Title 'Topic Tite' not found
+			"""
+			
 	Scenario: use an html skeleton
 		When I successfully run `atom init docs`
 		And I cd to "docs"
