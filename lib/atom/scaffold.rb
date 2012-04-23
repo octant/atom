@@ -45,6 +45,8 @@ EOS
       File.open("#{root_dir}/config/atom.yml", "w") do |file|
         file.puts <<EOS
 markup: textile
+
+plugins: { pre: [], post: [] }
 EOS
       end
     end
