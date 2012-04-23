@@ -47,6 +47,7 @@ EOS
 markup: textile
 
 plugins: { pre: [], post: [] }
+
 EOS
       end
     end

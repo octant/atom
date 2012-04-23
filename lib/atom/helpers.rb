@@ -1,8 +1,10 @@
 module Atom
-  def self.load_config
+  def self.load_config(command)
     const_set(:PATH, Dir.pwd)
     const_set(:CONFIG, YAML.load_file("#{PATH}/config/atom.yml"))
-
+    const_set(:PRE_PLUGINS, CONFIG['plugins']['pre'])
+    const_set(:POST_PLUGINS, CONFIG['plugins']['post'])
+    
     unless CONFIG[:author]
       begin
         CONFIG[:author] = `git config --get user.name`.chomp
@@ -19,7 +21,7 @@ module Atom
         data = YAML.load($1)
       end
     rescue => e
-      puts "YAML Exception: #{e.message}"
+      $stderr.puts "YAML Exception: #{e.message}"
     end
 
     data ||= {}
@@ -63,6 +65,10 @@ module Atom
     else 
       raise "Ambiguous title '#{title}'"
     end
+  end
+  
+  def self.name(type, title)
+    "#{type.split('').first}_#{title.chomp.downcase.split.join('_')}.textile"
   end
   
   # Ensure files are written in a consistant manner

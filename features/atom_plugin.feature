@@ -10,7 +10,7 @@ Feature: we can allow users to modify the build process with plugins
 		And I append to "config/atom.yml" with:
 			"""
 			
-			plugins: { pre: [tilted] }
+			plugins: { pre: [Tilted], post: [] }
 			"""
 		And a file named "plugins/tilted.rb" with:
 			"""
@@ -30,7 +30,7 @@ Feature: we can allow users to modify the build process with plugins
 		And I append to "config/atom.yml" with:
 			"""
 			
-			plugins: { post: [mad] }
+			plugins: { pre: [], post: [Mad] }
 			"""
 		And a file named "plugins/mad.rb" with:
 			"""
@@ -42,4 +42,33 @@ Feature: we can allow users to modify the build process with plugins
 			"""
 		And I successfully run `atom build 'Map Titled Text'`
 		Then the file "output/html/map_titled_text.html" should contain "Mad"
+		
+	Scenario: ensure proper plugins are run at appropriate time
+		When I successfully run `atom init docs`
+		And I cd to "docs"
+		And I successfully run `atom new -m 'Map Titled Text'`
+		And I overwrite "config/atom.yml" with:
+			"""
+			
+			plugins: { pre: [Made], post: [Mad] }
+			"""
+		And a file named "plugins/mad.rb" with:
+			"""
+			class Mad < Atom::Plugin
+			  def run(text)
+			    text.gsub(/Map/, "Mad")
+			  end
+			end
+			"""
+		And a file named "plugins/made.rb" with:
+			"""
+			class Made < Atom::Plugin
+			  def run(text)
+			    text.gsub(/Mad/, "Made")
+			  end
+			end
+			"""
+		And I successfully run `atom build 'Map Titled Text'`
+		Then the file "output/html/map_titled_text.html" should not contain "Made"
+	
 		

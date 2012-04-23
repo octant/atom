@@ -59,31 +59,36 @@ command :new do |c|
   c.action do |global_options,options,args|
     
     if options[:c]
-      Atom::Generate.template('concept', args[0])
+      Atom::Generate.from_template('concept', args[0])
     end
     
     if options[:m]
-      Atom::Generate.template('map', args[0])
+      Atom::Generate.from_template('map', args[0])
     end
     
     if options[:p]
-      Atom::Generate.template('procedure', args[0])
+      Atom::Generate.from_template('procedure', args[0])
     end
   end
 end
 
 # build command
-desc 'output source document into another format'
+desc 'output source map to html'
 arg_name "'document title'"
 command :build do |c|
   c.action do |global_options,options,args|
     temp_file = Atom::Generate.temp_file('map', args[0])
 
-    Atom::Plugger.run_pre(temp_file)
+    Atom::Plugger.load_plugins(
+      "#{Atom::PATH}/plugins",
+      Atom::PRE_PLUGINS | Atom::POST_PLUGINS
+    )
+    
+    Atom::Plugger.run(temp_file, Atom::PRE_PLUGINS)
     
     html_file = Atom::Generate.html(temp_file)
     
-    Atom::Plugger.run_post(html_file)
+    Atom::Plugger.run(html_file, Atom::POST_PLUGINS)
   end
 end
 
@@ -91,7 +96,7 @@ pre do |global,command,options,args|
   if command.name == :help # allow help command to run
     true
   elsif File.exist?('.atom')
-    Atom::load_config
+    Atom::load_config(command)
     
     true
   else

@@ -1,9 +1,8 @@
-
 module Atom
   class Generate
-    def self.template(type, title)
-      dest = self.destination("source", type)
-      file_name = self.name(type, title)
+    def self.from_template(type, title)
+      dest = type == 'map' ? "source/maps" : "source/topics"
+      file_name = Atom::name(type, title)
       template = File.read("#{Atom::PATH}/templates/#{type}.textile")
       
       if File.exist?(File.join(dest, file_name))
@@ -21,8 +20,7 @@ module Atom
     end
     
     def self.temp_file(type, title)
-      dest = self.destination("temp", type)
-      file_name = self.name(type, title)
+      file_name = Atom::name(type, title)
       
       Atom::write_file(
         "#{Atom::PATH}/temp/#{file_name}",
@@ -56,23 +54,6 @@ module Atom
       )
       
       return out_file
-    end
-    
-    # Helpers
-    
-    def self.name(type, title)
-      "#{type.split('').first}_#{title.chomp.downcase.split.join('_')}.textile"
-    end
-    
-    def self.destination(root, type)
-      case type
-      when 'concept', 'procedure'
-        root = File.join(root, 'topics')
-      when 'map'
-        root = File.join(root, 'maps')
-      end
-      
-      return root
     end
   end
 end
