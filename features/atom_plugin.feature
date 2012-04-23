@@ -10,7 +10,7 @@ Feature: we can allow users to modify the build process with plugins
 		And I append to "config/atom.yml" with:
 			"""
 			
-			plugins: { pre: [Tilted], post: [] }
+			plugins: { pre: [tilted], post: [] }
 			"""
 		And a file named "plugins/tilted.rb" with:
 			"""
@@ -30,7 +30,7 @@ Feature: we can allow users to modify the build process with plugins
 		And I append to "config/atom.yml" with:
 			"""
 			
-			plugins: { pre: [], post: [Mad] }
+			plugins: { pre: [], post: [mad] }
 			"""
 		And a file named "plugins/mad.rb" with:
 			"""
@@ -50,7 +50,7 @@ Feature: we can allow users to modify the build process with plugins
 		And I overwrite "config/atom.yml" with:
 			"""
 			
-			plugins: { pre: [Made], post: [Mad] }
+			plugins: { pre: [made], post: [mad] }
 			"""
 		And a file named "plugins/mad.rb" with:
 			"""
@@ -70,5 +70,26 @@ Feature: we can allow users to modify the build process with plugins
 			"""
 		And I successfully run `atom build 'Map Titled Text'`
 		Then the file "output/html/map_titled_text.html" should not contain "Made"
+		
+	Scenario: handle filename to class name conversion
+		When I successfully run `atom init docs`
+		And I cd to "docs"
+		And I successfully run `atom new -m 'Map Titled Text'`
+		And I overwrite "config/atom.yml" with:
+			"""
+			
+			plugins: { pre: [], post: [replace_map] }
+			"""
+		And a file named "plugins/replace_map.rb" with:
+			"""
+			class ReplaceMap < Atom::Plugin
+			  def run(text)
+			    text.gsub(/Map/, "Mad")
+			  end
+			end
+			"""
+		And I successfully run `atom build 'Map Titled Text'`
+		Then the file "output/html/map_titled_text.html" should contain "Mad"
+	
 	
 		

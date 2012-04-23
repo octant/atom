@@ -6,10 +6,11 @@ module Atom
       end
     end
     
-    def self.run(file_path, plugins)
+    def self.run(plugins, file_path)
       text = File.read(file_path)
       
-      plugins.each do |classname|
+      plugins.each do |plugin|
+        classname = plugin.split('_').map(&:capitalize).join
         text = Kernel.const_get(classname).new(text).to_s
       end
       

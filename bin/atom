@@ -79,16 +79,13 @@ command :build do |c|
   c.action do |global_options,options,args|
     temp_file = Atom::Generate.temp_file('map', args[0])
 
-    Atom::Plugger.load_plugins(
-      "#{Atom::PATH}/plugins",
-      Atom::PRE_PLUGINS | Atom::POST_PLUGINS
-    )
+    Atom::Plugger.load_plugins("#{Atom::PATH}/plugins", Atom::PLUGINS)
     
-    Atom::Plugger.run(temp_file, Atom::PRE_PLUGINS)
+    Atom::Plugger.run(Atom::PRE_PLUGINS, temp_file)
     
     html_file = Atom::Generate.html(temp_file)
     
-    Atom::Plugger.run(html_file, Atom::POST_PLUGINS)
+    Atom::Plugger.run(Atom::POST_PLUGINS, html_file)
   end
 end
 
@@ -96,7 +93,7 @@ pre do |global,command,options,args|
   if command.name == :help # allow help command to run
     true
   elsif File.exist?('.atom')
-    Atom::load_config(command)
+    Atom::load_config
     
     true
   else

@@ -1,9 +1,10 @@
 module Atom
-  def self.load_config(command)
+  def self.load_config
     const_set(:PATH, Dir.pwd)
     const_set(:CONFIG, YAML.load_file("#{PATH}/config/atom.yml"))
     const_set(:PRE_PLUGINS, CONFIG['plugins']['pre'])
     const_set(:POST_PLUGINS, CONFIG['plugins']['post'])
+    const_set(:PLUGINS, PRE_PLUGINS | POST_PLUGINS)
     
     unless CONFIG[:author]
       begin
