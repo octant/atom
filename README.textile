@@ -1,3 +1,5 @@
+"!https://secure.travis-ci.org/octant/atom.png!":http://travis-ci.org/octant/atom
+
 h1. Atom
 
 Atom is a command suite for generating text-based documentation, and is loosely based on the "Darwin Information Typing Architecture":http://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture (DITA). 
