@@ -1,13 +1,13 @@
 # Ensure we require the local version and not one we might have installed already
 require File.join([File.dirname(__FILE__),'lib','atom_version.rb'])
 spec = Gem::Specification.new do |s| 
-  s.name = 'atom'
+  s.name = 'atom-doc'
   s.version = Atom::VERSION
-  s.author = 'Your Name Here'
-  s.email = 'your@email.address.com'
-  s.homepage = 'http://your.website.com'
+  s.author = 'Michael Wood'
+  s.email = 'octant.coder@gmail.com'
+  s.homepage = 'http://github.com/octant/atom'
   s.platform = Gem::Platform::RUBY
-  s.summary = 'A description of your project'
+  s.summary = 'Command line tool for generating text-based documentation'
 # Add your other files here if you make them
   s.files = %w(
 bin/atom
