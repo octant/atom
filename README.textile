@@ -1,0 +1,150 @@
+h1. Atom
+
+Atom is a command suite for generating text-based documentation, and is loosely based on the "Darwin Information Typing Architecture":http://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture (DITA). 
+
+DITA is XML-based, and content is created as small *topic* items rather than long books or chapters and listed in *maps* to produce a document. Topics should be __atomic__ in that they contain the smallest amount of information that makes sense with no further context. A DITA map contains links to topics, organized in the sequence (which may be hierarchical) in which they are intended to appear in finished documents.
+
+Instead of being XML-based, *atom* uses *textile* as the markup language. This avoids having to use a special editor or hand coding XML. It also allows the source documents to be read more easily by a human. It's open source and has a simple plug-in system that allows the content creator to create scripts that hook in to the processing stream.
+
+h2. The Basics
+
+Creating documentation is simple.
+
+# Initialize a repository with the @init@ command
+# Add version control with @git@ (optional)
+# Add *maps* and *topics* with the @new@ command
+# Edit your *maps* to include *topics*
+# Build your *maps* with the @build@ command
+
+h3. The Repository
+
+We can initialize a new repository by running the following command:
+
+bc. $ atom init docs
+>
+create  [Dir]: docs/source
+create  [Dir]: docs/source/topics
+create  [Dir]: docs/source/maps
+create  [Dir]: docs/config
+create  [Dir]: docs/temp
+create  [Dir]: docs/output
+create  [Dir]: docs/output/html
+create  [Dir]: docs/templates
+create  [Dir]: docs/plugins
+create [File]: docs/.atom
+create [File]: docs/.gitignore
+create [File]: docs/config/atom.yml
+create [File]: docs/templates/concept.textile
+create [File]: docs/templates/procedure.textile
+create [File]: docs/templates/map.textile
+create [File]: docs/templates/default.html
+
+This will create a series of directories and files that will be used as a framework to store and build your documentation. From inside the *docs* directory, you can run the rest of the *atom* commands.
+
+Note that several *template* files are created:
+
+* concept.textile
+* map.textile
+* procedure.textile
+* default.html
+
+These templates contain basic skeletons to generate documents from and are meant to be edited to suit the needs of the particular project. When you run the @new@ command, the files are generated from these templates.
+
+To generate a map, run:
+
+bc. $ atom new -m 'Working with Vagrant'
+>
+create [File]: source/maps/m_working_with_vagrant.textile
+
+The @new@ command takes a switch indicating the type of document you want to create [concept, procedure, map] and a title. It will create the document in the *source* directory, either under topics or maps. In the example above, a new *map* is created with a title of *Working with Vagrant*.
+
+Next we should create some topics to be included in the map:
+
+bc. $ atom new -c 'VirtualBox'
+>
+create [File]: source/topics/c_virtualbox.textile
+
+bc. $ atom new -p 'Installing VirtualBox'
+>
+create [File]: source/topics/p_installing_virtualbox.textile
+
+Notice that the @-c@ creates a *concept* and the @-p@ creates a *procedure* and that the respective files are prefixed witha a *c* and a *p* and placed in the @source/topics@ directory.
+
+Now that we have a few topics, we can include them in the map with the following lines:
+
+bc. =1 VirtualBox
+=2 Installing VirtualBox
+
+The @=@ sign includes the topic that matches the given title, and the number tells *atom* where this topic fits in the hierarchy with @0@ being the root and the default. Even though the @c_virtualbox.textile@ file has an @h1@ header, it will have an @h2@ in the final document.
+
+Now that we have some topics in our map, we can build it.
+
+bc. $ atom build 'Working with Vagrant'
+>
+create [File]: output/html/working_with_vagrant.html
+
+We now have an html document that contains our documentation.
+
+h2. Advanced Usage
+
+h3. Plugins
+
+*Atom* allows users to create plugins that hook in to the build process at two points. The first hook is after the map and subtopics have been assembeled into one document, but is still a textile document. The second hook is after the html document is created.
+
+To create a plugin, create a new file in the *plugins* directory. I'll create a file named *contents.rb*.
+
+bc. class Contents < Atom::Plugin
+  def run(text)
+    # logic here
+  end
+end
+
+Your class must inherit from @Atom::Plugin@ and override the @run@ method. You'll be passed the text of the file your hooking in to, which should be manipulated and returned.
+
+In order to run this plugin, you'll have to tell *atom* about it in the @config/atom.yml@ file. When you first start an *atom* project, no plugins will be configured to run and the yaml file will contain the following line:
+
+bc. plugins: { pre: [], post: [] }
+
+I want my plugin to run after the html has been generated, so I'll place the name of my plugin in the *post* array.
+
+bc. plugins: { pre: [], post: [contents] }
+
+Now let's modify the plugin to do something useful:
+
+bc.. require 'nokogiri'
+
+class Contents < Atom::Plugin
+  def run(text)
+    doc = Nokogiri::HTML.parse(text)
+    return create_table(doc, 4)
+  end
+  
+  def create_table(doc, depth=3)
+    # The following line creates an array like ["h1", "h2", "h3"]
+    hs = (1..depth).to_a.reduce([]) {|r, e| r << "h#{e}"}
+    table_node = Nokogiri::XML::Node.new('table', doc)
+    
+    doc.css(hs.join(',')).each_with_index do |h, i|
+      anchor_node = Nokogiri::XML::Node.new('a',doc)
+      link_node = Nokogiri::XML::Node.new('a',doc)
+      row_node = Nokogiri::XML::Node.new('tr', doc)
+      data_node = Nokogiri::XML::Node.new('td', doc)
+      
+      link_node['href'] = "##{i}"
+      anchor_node['name'] = "#{i}"
+      h.add_previous_sibling(anchor_node)
+      link_node.content = h.content
+      data_node.add_child(link_node)
+      row_node.add_child(data_node)
+      
+      table_node.add_child(row_node)
+    end
+    
+    body = doc.at_css "body"
+    body.children.first.add_previous_sibling(table_node)
+    
+    return doc
+  end
+end
+
+p. The above plugin will create a table listing all headings up to the depth specified with a link to each heading.

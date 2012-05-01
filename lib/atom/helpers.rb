@@ -56,9 +56,8 @@ module Atom
   end
   
   def self.get_src_file_by_title(title, src_dir)
-    # TODO abastract file extension to accomodate markup choice
     file_title = title.downcase.split.join('_')
-    result = Dir.glob("#{Atom::PATH}/source/#{src_dir}/*#{file_title}.textile")
+    result = Dir.glob("#{Atom::PATH}/source/#{src_dir}/?_#{file_title}.*")
     if result.size == 1
       result.first
     elsif result.size == 0
@@ -69,6 +68,7 @@ module Atom
   end
   
   def self.name(type, title)
+    # TODO abastract file extension to accomodate markup choice
     "#{type.split('').first}_#{title.chomp.downcase.split.join('_')}.textile"
   end
   

@@ -21,7 +21,7 @@ lib/atom/plugger.rb
 )
   s.require_paths << 'lib'
   s.has_rdoc = true
-  s.extra_rdoc_files = ['README.rdoc','atom.rdoc']
+  s.extra_rdoc_files = ['README.textile','atom.rdoc']
   s.rdoc_options << '--title' << 'atom' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
   s.executables << 'atom'
