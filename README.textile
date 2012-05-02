@@ -95,7 +95,7 @@ h3. Plugins
 
 To create a plugin, create a new file in the *plugins* directory. I'll create a file named *contents.rb*.
 
-bc. class Contents < Atom::Plugin
+bc[ruby]. class Contents < Atom::Plugin
   def run(text)
     # logic here
   end
@@ -113,7 +113,7 @@ bc. plugins: { pre: [], post: [contents] }
 
 Now let's modify the plugin to do something useful:
 
-bc.. require 'nokogiri'
+bc[ruby].. require 'nokogiri'
 
 class Contents < Atom::Plugin
   def run(text)
