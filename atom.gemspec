@@ -22,13 +22,13 @@ lib/atom/plugger.rb
   s.require_paths << 'lib'
   s.has_rdoc = true
   s.extra_rdoc_files = ['README.textile','atom.rdoc']
-  s.rdoc_options << '--title' << 'atom' << '--main' << 'README.rdoc' << '-ri'
+  s.rdoc_options << '--title' << 'atom' << '--main' << 'README.rdoc' << '--ri'
   s.bindir = 'bin'
   s.executables << 'atom'
   s.add_development_dependency('rake')
   s.add_development_dependency('rdoc')
   s.add_development_dependency('aruba', '~> 0.4.6')
-  s.add_runtime_dependency('gli')
+  s.add_runtime_dependency('gli', '>= 2')
   s.add_runtime_dependency('mustache')
   s.add_runtime_dependency('RedCloth')
 end
