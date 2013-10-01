@@ -7,7 +7,9 @@ spec = Gem::Specification.new do |s|
   s.email = 'octant.coder@gmail.com'
   s.homepage = 'http://github.com/octant/atom'
   s.platform = Gem::Platform::RUBY
-  s.summary = 'Command line tool for generating text-based documentation'
+  s.license = 'MIT'
+  s.description = 'Command line tool for generating text-based documentation'
+  s.summary = "atom-#{s.version}"
 # Add your other files here if you make them
   s.files = %w(
 bin/atom
@@ -27,7 +29,7 @@ lib/atom/plugger.rb
   s.executables << 'atom'
   s.add_development_dependency('rake')
   s.add_development_dependency('rdoc')
-  s.add_development_dependency('aruba', '~> 0.4.6')
+  s.add_development_dependency('aruba', '~> 0.5.3')
   s.add_runtime_dependency('gli', '>= 2')
   s.add_runtime_dependency('mustache')
   s.add_runtime_dependency('RedCloth')
