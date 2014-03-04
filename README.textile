@@ -8,6 +8,10 @@ DITA is XML-based, and content is created as small *topic* items rather than lon
 
 Instead of being XML-based, *atom* uses *textile* as the markup language. This avoids having to use a special editor or hand coding XML. It also allows the source documents to be read more easily by a human. It's open source and has a simple plug-in system that allows the content creator to create scripts that hook in to the processing stream.
 
+h2. Installation
+
+bc. $ gem install atom-doc
+
 h2. The Basics
 
 Creating documentation is simple.
